@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 Xiaomi, Inc.
+# Copyright (c) 2023 Xiaomi, Inc.
 # All Rights Reserved.
 # Confidential and Proprietary - Xiaomi, Inc.
 #
@@ -28,6 +28,8 @@ on boot
     chmod 0664 /sys/class/touch/touch_dev/update_rawdata
     chown system system /sys/class/touch/touch_dev/enable_touch_raw
     chmod 0664 /sys/class/touch/touch_dev/enable_touch_raw
+    chown system system /sys/class/touch/touch_dev/resolution_factor
+    chmod 0664 /sys/class/touch/touch_dev/resolution_factor
     chown system system /sys/class/touch/touch_dev/enable_touch_delta
     chmod 0664 /sys/class/touch/touch_dev/enable_touch_delta
     chown system system /sys/class/touch/touch_dev/touch_thp_dump
@@ -68,8 +70,8 @@ on boot
     chmod 0664 /sys/class/touch/touch_dev/palm_sensor
     chown system system /sys/class/touch/touch_dev/hold_sensor
     chmod 0664 /sys/class/touch/touch_dev/hold_sensor
-    chown system system /proc/tp_hal_version
-    chmod 0664 /proc/tp_hal_version
+    chown system system /proc/tp_fw_version
+    chmod 0664 /proc/tp_fw_version
     chown system system /proc/tp_lockdown_info
     chmod 0664 /proc/tp_lockdown_info
     chmod 0664 /sys/class/touch/touch_dev/touch_active_status
@@ -82,12 +84,8 @@ on boot
     chown system system /sys/class/touch/touch_dev/touch_sensor
     chmod 0664 /sys/class/touch/touch_dev/touch_sensor_ctrl
     chown system system /sys/class/touch/touch_dev/touch_sensor_ctrl
-    chmod 0664 /sys/class/touch/touch_dev/touch_thp_film
-    chown system system /sys/class/touch/touch_dev/touch_thp_film
     chmod 0664 /sys/class/touch/touch_dev/touch_thp_mem_notify
     chown system system /sys/class/touch/touch_dev/touch_thp_mem_notify
-    chmod 0666 /dev/mipp_pen0
-    chown system system /dev/mipp_pen0
     chmod 0664 /sys/class/touch/touch_dev/touch_thp_testmode
     chown system system /sys/class/touch/touch_dev/touch_thp_testmode
     chmod 0664 /sys/class/touch/touch_dev/touch_thp_testresult
@@ -102,16 +100,33 @@ on boot
     chown system system /sys/class/touch/touch_dev/touch_ic_buffer
     chmod 0664 /sys/class/touch/touch_dev/abnormal_event
     chown system system /sys/class/touch/touch_dev/abnormal_event
+    chown system system /sys/class/touch/touch_dev/touch_thp_ic_cmd
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_ic_cmd
+    chown system system /sys/class/touch/touch_dev/touch_thp_ic_cmd_data
+    chmod 0664 /sys/class/touch/touch_dev/touch_thp_ic_cmd_data
+
+
 on charger
     write /sys/class/touch/touch_dev/touch_doze_analysis 6
 
-
-service touch_report /system/bin/touch_report
+service touchfeature-service /system/bin/vendor.xiaomi.hw.touchfeature-service
+    interface aidl  vendor.xiaomi.hw.touchfeature.ITouchFeature/default
     class hal
     user root
-    group root system uhid input
+    group system system input
     capabilities SYS_NICE
     ioprio rt 4
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib64/hw:/system/lib64:/sbin
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin:/odm/lib64:/odm/lib
     disabled
     seclabel u:r:recovery:s0
+
+service toucheventcheck /system/bin/toucheventcheck
+    class main
+    user root
+    group root
+    oneshot
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin:/odm/lib64:/odm/lib
+    disabled
+    seclabel u:r:recovery:s0
+
+
