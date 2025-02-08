@@ -21,4 +21,3 @@ service vibratorfeature-hal-service /system/bin/vendor.xiaomi.hardware.vibratorf
 
 on property:sys.boot_completed=1
     setprop vendor.haptic.calibrate.done 1
-
