@@ -27,7 +27,7 @@
 -include $(COMMON_PATH)/BoardConfigCommon.mk
 
 # Recovery
-TARGET_OTA_ASSERT_DEVICE := houji
+TARGET_OTA_ASSERT_DEVICE := zorn
 
 # TWRP specific build flags
 TW_FRAMERATE := 120
