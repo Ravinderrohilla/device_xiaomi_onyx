@@ -15,4 +15,4 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/twrp_zorn.mk
+    $(LOCAL_DIR)/twrp_onyx.mk

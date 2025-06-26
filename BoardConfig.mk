@@ -27,7 +27,7 @@
 -include $(COMMON_PATH)/BoardConfigCommon.mk
 
 # Recovery
-TARGET_OTA_ASSERT_DEVICE := zorn
+TARGET_OTA_ASSERT_DEVICE := onyx
 
 # TWRP specific build flags
 TW_FRAMERATE := 120
